@@ -1,6 +1,5 @@
 import warnings
 
-warnings.filterwarnings(action="ignore")
 
 from functools import partial
 from typing import Callable
@@ -14,6 +13,8 @@ from xgboost import XGBClassifier
 
 from src.helpers import load_processed_data
 from config import Config
+
+warnings.filterwarnings(action="ignore")
 
 
 def get_objective(
@@ -71,7 +72,9 @@ def train(config: Config):
     """Function to train the model"""
 
     X_train, X_test, y_train, y_test, = [
-        load_processed_data(f"{config.PROJECT_ROOT}/{config.DATA_PROCESSED_PATH}/{df}.csv")
+        load_processed_data(
+            f"{config.PROJECT_ROOT}/{config.DATA_PROCESSED_PATH}/{df}.csv"
+        )
         for df in ["X_train", "X_test", "y_train", "y_test"]
     ]
 
@@ -98,7 +101,9 @@ def train(config: Config):
     best_model = optimize(objective, space)
 
     # Save model
-    joblib.dump(best_model, f"{config.PROJECT_ROOT}/{config.MODEL_PATH}/model.pickle")
+    joblib.dump(
+        best_model, f"{config.PROJECT_ROOT}/{config.MODEL_PATH}/model.pickle"
+    )
 
 
 if __name__ == "__main__":
